@@ -101,8 +101,6 @@ class Items(viewsets.ModelViewSet):
             cache.delete(f'item_{item_instance.id}')
             # refresh the cache 
             item_instance.refresh_from_db() 
-            # created in a new cache
-            cache.set(f'item_{item_instance.id}', item_instance, timeout=60 * 5)
             return Response(serializer.data, status=status.HTTP_200_OK)  
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
