@@ -268,10 +268,77 @@ You can now access the API at http://127.0.0.1:8000/
 		    }
         }
         ```
-        
-        
-        
-        
+   ### **Logging**
+   The API includes detailed logging to track various events for debugging, performance monitoring, and security purposes. The logs are stored in the file `items.log` and include the following information:
+   
+- **Retrieval Speed**: When fetching data, the retrieval time is logged, showing whether the data was fetched from the database or the cache. This helps in tracking and optimizing performance.
+  
+   **Example log entries**:
+   
+
+```plaintext
+INFO 2024-09-25 07:16:46,611 views POST request to /items/ from 127.0.0.1
+INFO 2024-09-25 07:20:05,826 views Request to /api/items/8/ took 0.0051 seconds from DB.
+INFO 2024-09-25 07:20:15,816 views GET request to /items/8 from 127.0.0.1
+INFO 2024-09-25 07:20:15,817 views Request to /api/items/8/ took 0.0003 seconds because of cache.
+INFO 2024-09-25 07:20:32,570 views UPDATE request to /items/ from 127.0.0.1
+INFO 2024-09-25 07:20:38,987 views GET request to /items/8 from 127.0.0.1
+INFO 2024-09-25 07:21:26,727 views GET request to /items/8 from 127.0.0.1
+ERROR 2024-09-25 07:21:26,729 views Item with ID 8 not found.
+
+```
+ ### **testing**
+ ```bash
+python3 manage.py test items 
+```
+ **Example test entries**:
+```plaintext
+  python3 manage.py test items  
+Found 8 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+INFO 2024-09-25 07:36:30,302 views POST request to /items/ from 127.0.0.1
+..INFO 2024-09-25 07:36:31,003 views DELETE request to /items/ from 127.0.0.1
+..INFO 2024-09-25 07:36:31,706 views GET request to /items/6 from 127.0.0.1
+INFO 2024-09-25 07:36:31,709 views Request to /api/items/6/ took 0.0034 seconds from DB.
+..INFO 2024-09-25 07:36:32,564 views UPDATE request to /items/ from 127.0.0.1
+..
+----------------------------------------------------------------------
+Ran 8 tests in 2.978s
+
+OK
+Destroying test database for alias 'default'...
+
+```
+### **cache redis**
+The redis cache is  includes for Retrieve Item to increase the speeed of the data you can check the redis cache i index 1
+open terminal exit from server
+ ```bash
+redis-cs
+
+```
+inside that enter to the index 
+ ```bash
+select 1
+keys *
+127.0.0.1:6379[1]> keys *
+1) ":1:item_6"
+127.0.0.1:6379[1]> 
+
+```
+```plaintext
+1) ":1:item_6"
+127.0.0.1:6379[1]>
+if there is not cache
+127.0.0.1:6379[1]> keys *
+(empty array)
+127.0.0.1:6379[1]> 
+```
+
+
+
+
+
 
 
 
